@@ -1,16 +1,12 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Landing page</title>
-    </head>
+{% extends 'base.html' %}
 
-    <body>
+{% block title %}
+    Landing page
+{% endblock title %}
 
-        <h1>Welcome to django project</h1>
 
-        <p>
-            <a href="/users/register">Register</a> | <a href="users/login">Login</a>
-        </p>
-
-    </body>
-</html>
+{% block content %}
+    <h1 class="m-4">Welcome to django project!</h1>
+{% endblock content %}
+    
+    

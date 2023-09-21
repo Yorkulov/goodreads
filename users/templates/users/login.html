@@ -1,12 +1,18 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Login page</title>
-    </head>
+{% extends 'base.html' %}
 
-    <body>
+{% block title %}
+    Login
+{% endblock title %}
 
-        <h1>Login</h1>
 
-    </body>
-</html>
+
+{% block content %}
+    <h1 class="m-3">Login</h1>
+
+    <form method="POST" class="m-3">{% csrf_token %}
+        {{form.as_p}}
+
+        <button type="submit" class="btn btn-outline-primary m-1">Log in</button> <span>If you are not registered? <a href="{% url 'users:register' %}">You can register here.</a></span>
+    </form>
+{% endblock content %}
+    

@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    
     #locale
     'books',
     'users',
@@ -73,6 +73,9 @@ DATABASES = {
         'PASSWORD': '1119', # postgresql password
         'HOST': '0.0.0.0', # localhost
         'PORT': 5432, # postgresql port
+        'TEST': {
+            'NAME': 'test_finance',  # test uchun 
+        },
         # ishlashi uchun psycopg2 paketini o'rnatish kerak
     }
 }
@@ -108,11 +111,18 @@ USE_I18N = True
 
 USE_TZ = True
 
+LOGIN_URL = 'users:login'
+
+AUTH_USER_MODEL = "users.CustomUser"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'static/']
+
+MEDIA_ROOT = 'media-files/'
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

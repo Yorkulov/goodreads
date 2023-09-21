@@ -1,0 +1,3 @@
+sudo service postgresql start (pipenv hosil qilingan directionda)
+sudo su - postgres
+psql
