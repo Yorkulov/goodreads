@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
 
 {% block title %}
     Registiration
@@ -7,28 +9,32 @@
 
 
 {% block content %}
-    <h1 class="m-3">Registration</h1>
+    <div class="row d-flex justify-content-center">
+        <div class="col-6">
+            <h1 class="m-3">Registration</h1>
 
-    <form method="POST" enctype="multipart/form-data" class="m-3">{% csrf_token %}
-
-        {{form.as_p}}
+            <form method="POST" enctype="multipart/form-data" class="m-3">{% csrf_token %}
         
-        {% comment %} <label for="username">Username</label>
-        <input type="text" name="username" id="username"> <hr><br>
-
-        <label for="first_name">First name</label>
-        <input type="text" name="first_name" id="first_name"> <hr><br>
-
-        <label for="last_name">Last name</label>
-        <input type="text" name="last_name" id="last_name"> <hr><br>
-
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email"> <hr><br>
-
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password"> <hr><br> {% endcomment %}
-
-        <button type="submit" class="btn btn-outline-primary">Submit</button> <hr><br> 
-    </form>
+                {{form | crispy}}
+                
+                {% comment %} <label for="username">Username</label>
+                <input type="text" name="username" id="username"> <hr><br>
+        
+                <label for="first_name">First name</label>
+                <input type="text" name="first_name" id="first_name"> <hr><br>
+        
+                <label for="last_name">Last name</label>
+                <input type="text" name="last_name" id="last_name"> <hr><br>
+        
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email"> <hr><br>
+        
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password"> <hr><br> {% endcomment %}
+        
+                <button type="submit" class="btn btn-primary w-100">Submit</button> <hr><br> 
+            </form>
+        </div>
+    </div>
 {% endblock content %}
     

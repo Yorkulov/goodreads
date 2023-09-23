@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Review edit
+{% endblock title %}
+
+
+
+{% block content %}
+    <form method="POST">{% csrf_token %}
+        {{ review_form | crispy}}
+        <button class="btn btn-outline-primary" type="submit">Save</button>
+    </form>
+{% endblock content %}
+    

@@ -4,9 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
+django = "==4.0"
 psycopg2 = "*"
 pillow = "*"
+crispy = "*"
+celery = "*"
 
 [dev-packages]
 

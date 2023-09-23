@@ -174,6 +174,7 @@ class LoginTestCase(TestCase):
 
         self.assertFalse(user.is_authenticated)
 
+
 class ProfileTestCase(TestCase):
 
     def test_login_required(self):

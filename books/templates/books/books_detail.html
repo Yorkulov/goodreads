@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
 
 {% block title %}
     Book detail 
@@ -7,11 +9,68 @@
 
 
 {% block content %}
-    <h2>Book Detail</h2>
-
-    <h2>{{book.title}}</h2>
+<div class="row mb-5">
+    <div class="col-3">
+        <img class="book-detail-image" src="{{ book.default_picture.url }}" alt="Profile photo">
+    </div>
+    <div class="col-8">
+        <li class="list-unstyled book-detail-title">{{book.title}}</li>
+        <span class="fst-italic mb-1">
+        {% for book_author in book.bookauthor_set.all %}
+            {% if forloop.last %}
+                {{ book_author.author_id.full_name }}
+            {% else %}
+                {{ book_author.author_id.full_name }},
+            {% endif %}
+        {% endfor %}
+        </span>
+        <p class="description">{{book.description}}</p>
+    </div>
     <hr>
-    <h3>{{book.description}}</h3>
-    <p>{{book.isbn}}</p>
+
+    <div class="row mb-5">
+        <div class="col-5">
+            <form method="POST" action="{% url 'books:review' book.pk %}"> {% csrf_token %}
+                {{ review_form | crispy }}
+
+                <button class="btn btn-primary w-100"> Add Review</button>
+            </form>
+        </div>
+    </div>
+
+    {% if comments %}
+        <h3 class="mb-5">Reviews</h3>
+    {% endif %}
+    <div class="review">
+        {% for item in reviews %}
+            <div class="row mb-5">
+                <div class="col-1">
+                    <img class="comment-user-image" src="{{ item.user_id.profile_picture.url }}" alt="Profile Picture">
+                </div>
+                <div class="col-7">
+                    <div>
+                        <span><b>
+                            {% if item.user_id.first_name %}  
+                                {{ item.user_id.first_name }}
+                            {% else %}
+                                {{ item.user_id.username }}
+                            {% endif %}</b></span>
+                        <span> in rating <b class="stars">{{item.stars_given}}</b> stars  </span><span style="color: gray;">{{item.created_at}}</span>
+                        <span>
+                            {% if item.user_id == request.user%}
+                                <a href="{% url 'books:review_edit' book.pk item.pk %}" class="m-2">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a href="{% url 'books:review_confirm_delete' book.pk item.pk %}" class="m-2">
+                                    <i class="bi bi-trash"></i>
+                                </a></span>
+                            {% endif %}
+                    </div>
+                    <p>{{ item.comment }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock content %}
     
