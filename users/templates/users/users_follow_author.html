@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+  <link rel="stylesheet" href="{% static 'css/users_follow_author.css' %}" type="text/css" />
+{% endblock %}
+
+{% block title %}
+  Profile
+{% endblock %}
+
+{% block content %}
+  <div class="users_follow_author">
+    <ol>
+      {% for author in authors %}
+        <li><a href="{% url 'books:author_detail' author.author.pk %}">{{ author.author.first_name }}</a></li>
+      {% endfor %}
+    </ol>
+  </div>
+{% endblock %}
+ 

@@ -13,12 +13,12 @@
           <div class="card mb-4">
             <div class="card-body">
               <div class="media mb-3">
-                <img src="{{ review.user_id.profile_picture.url }}" class="d-block ui-w-40 rounded-circle" alt="" />
+                <img src="{{ review.user.profile_picture.url }}" class="d-block ui-w-40 rounded-circle" alt="" />
                 <div class="media-body ml-3 mt-3     d-flex justify-content-between">
                   {% if review.first_name %} 
-                    <span>{{review.user_id.first_name}} {{review.user_id.last_name}}</span>
+                    <span>{{review.user.first_name}} {{review.user.last_name}}</span>
                   {% else %}
-                    {{review.user_id.username}}
+                    {{review.user.username}}
                   {% endif %}
                   <span class="text-muted small">{{review.created_at}}</span>
 

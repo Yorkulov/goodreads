@@ -1,0 +1,47 @@
+.container{
+    background-color: white !important;
+    margin-top: 200px;
+}
+
+#message-form{
+    margin: 20px auto;
+}
+
+#comment_user{
+    width: 80%;
+    flex-grow: 4;
+    padding: 5px 20px;
+    border-color: aqua;
+    background-color: aliceblue;
+    font-size: 18px;
+    font-weight: 500;
+    color: black;
+    outline: none;
+    border-radius: 10px;
+}
+
+#comment_button{
+    width: 15%;
+    flex-grow: 1;
+    padding: 5px 20px;
+    border-color: aqua;
+    background-color: blue;
+    font-size: 18px;
+    font-weight: 500;
+    color: white;
+    border-radius: 10px;
+    margin-left: 20px;
+}
+
+.comment{
+    font-size: 20px;
+    font-weight: 500;
+    font-family: sans-serif;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.user{
+    margin-bottom: 0;
+    padding-bottom: 0;
+}

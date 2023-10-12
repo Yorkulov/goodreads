@@ -5,9 +5,114 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.views.generic import ListView, DetailView
-from books.forms import BookReviewForm
-from books.models import Book, BookReview
+from books.forms import AuthorUserChatForm, BookReviewForm, MessageToAuthorForm, RequestAuthorUserForm
+from books.models import Author, Book, BookAuthor, BookReview, MessageToAuthor, RequestAuthorUser
+from users.models import CustomUser
 
+
+class AuthorView(View):
+    def post(self, request, pk):
+        author = Author.objects.get(pk=pk)
+        user = CustomUser.objects.get(pk=self.request.user.pk)        
+
+        request_form = RequestAuthorUser.objects.filter(author=author, user=user)
+        if RequestAuthorUser.objects.filter(user=user, author=author).exists():
+            request_form.delete()
+            messages.success(request, 'You are unfollowed!!')  
+            return redirect('books:author_detail', pk=pk, permanent=True)
+        else:
+            data = {
+                'user': user.pk,
+                'author': author.pk,
+                'is_status': True
+            }
+            request_form = RequestAuthorUserForm(data=data)
+            
+            if request_form.is_valid():
+                request_form.save()
+                messages.success(request, "Follow request sent successfully!")
+                return redirect('books:author_detail', pk=pk, permanent=True)
+            else:
+                messages.error(request, "Follow request sent unsuccessfully!")
+                
+          
+        return render(request, 'books/author.html', {'author': author, 'request_form': request_form})
+    
+    def get(self, request, pk):
+        author = Author.objects.get(pk=pk)
+        request_form = RequestAuthorUser.objects.filter(author=author)
+        author_book = BookAuthor.objects.filter(author=author.pk)
+        return render(request, 'books/author.html', {'author': author, 'request_form': request_form, 'author_book': author_book})
+        
+
+class AuthorChatView(View):
+
+    def get(self, request, pk):
+        author = Author.objects.get(pk=pk)
+        message_to_authors = MessageToAuthor.objects.filter(author=author)
+
+        return render(request, 'books/author_chat.html', {'message_to_authors': message_to_authors})
+
+
+class AuthorUserChatView(View):
+
+    def post(self, request, pk, user_pk):
+        author = Author.objects.get(pk=pk)
+        user = CustomUser.objects.get(pk=user_pk)
+        form = AuthorUserChatForm(data=request.POST)
+
+        if form.is_valid():
+            MessageToAuthor.objects.create(
+                user=user,
+                author=author,
+                comment_author=form.cleaned_data['comment_author']
+            )
+            messages.success(request, 'Send message')
+            return redirect('books:author_user_chat', pk=pk, user_pk=user.pk)
+        else:
+            messages.error(request, 'Unsend message')
+
+        return render(request, 'books/author_user_chat.html', {'form': form})
+    
+    def get(self, request, pk, user_pk):
+        author = Author.objects.get(pk=pk)
+        user = CustomUser.objects.get(pk=user_pk)
+        messages = MessageToAuthor.objects.filter(author=author, user=user).order_by('-created_at')
+
+        return render(request, 'books/author_user_chat.html', {'messages': messages, 'user': user})
+    
+
+
+class MessageToAuthorView(View):
+
+    def post(self, request, pk):
+        user = self.request.user
+        author = Author.objects.get(pk=pk)
+        message_form = MessageToAuthorForm(data=request.POST)
+
+        if message_form.is_valid():
+            # message_form.save()
+            MessageToAuthor.objects.create(
+                user = user,
+                author = author,
+                comment_user = message_form.cleaned_data['comment_user'],
+            )
+
+            messages.success(request, 'Send message')
+            return redirect('books:author_message', pk=pk, permanent=True)
+        else:
+            messages.error(request, 'Unsend message')
+
+        return render(request, 'books/message_author.html', {'message_form': message_form})
+    
+
+    def get(self, request, pk):
+        author = Author.objects.get(pk=pk)
+        user = self.request.user
+        messages = MessageToAuthor.objects.filter(author=author, user=user).order_by('-created_at')
+
+        return render(request, 'books/message_author.html', {'messages': messages})
+        
 
 
 # class BookListView(ListView):
@@ -28,7 +133,7 @@ class BookListView(View):
         if search_query:
             books = books.filter(title__icontains=search_query)
             
-        page_size = request.GET.get('page_size', 2)
+        page_size = request.GET.get('page_size', 4)
         paginator = Paginator(books, page_size)
 
         page_num = request.GET.get('page', 1)
@@ -81,7 +186,7 @@ class BookReviewView(View):
             return render(request, 'books/books_detail.html', {'book': book, 'book_review': book_review})
     
     
-class   BookReviewEditView(View):
+class BookReviewEditView(View):
 
     def get(self, request, book_pk, review_pk):
         book = Book.objects.get(pk=book_pk)

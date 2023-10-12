@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user
 from django.urls import reverse
+from books.models import Author, RequestAuthorUser
 from users.models import CustomUser
 
 
@@ -24,6 +25,8 @@ class RegistrationTestCase(TestCase):
         self.assertEqual(user.email, 'temur1@gmail.com')
         self.assertNotEqual(user.password, 'password1234')
         self.assertTrue(user.check_password('password1234'))
+    
+
 
     def test_required_fields(self):
         """Kiritilishi shart bo'lgan fieldlarni test qiladi"""
@@ -40,6 +43,7 @@ class RegistrationTestCase(TestCase):
         self.assertEqual(user_count, 0)
         self.assertFormError(response, 'form', 'username', 'This field is required.')
         self.assertFormError(response, 'form', 'password', 'This field is required.')
+
 
     def test_invalid_email(self):
         """Email noto'g'riligini test qiladi"""
@@ -58,6 +62,7 @@ class RegistrationTestCase(TestCase):
         
         self.assertEqual(user_count, 0)
         self.assertFormError(response, 'form', 'email', 'Enter a valid email address.')
+
 
     def test_unique_username(self):
         """Testimiz vazifasi username malumotlar bazasida mavjud yoki yuqligini tekshirib beradi"""
@@ -82,6 +87,7 @@ class RegistrationTestCase(TestCase):
         self.assertEqual(user_count, 1)
         self.assertFormError(response, 'form', 'username', 'A user with that username already exists.')
 
+
     def test_unique_email(self):
         """Testimiz vazifasi email malumotlar bazasida avval kiritilgan yoki yuqligini tekshirib beradi"""
         user = CustomUser.objects.create(username='temur', email='temur@gmail.com')
@@ -103,6 +109,7 @@ class RegistrationTestCase(TestCase):
 
         self.assertEqual(user_count, 1)
         self.assertFormError(response, 'form', 'email', 'This email already used!')
+
 
 
 class LoginTestCase(TestCase):
@@ -175,6 +182,7 @@ class LoginTestCase(TestCase):
         self.assertFalse(user.is_authenticated)
 
 
+
 class ProfileTestCase(TestCase):
 
     def test_login_required(self):
@@ -232,3 +240,35 @@ class ProfileTestCase(TestCase):
         self.assertEqual(response.url, reverse('users:profile'))
 
 
+
+# class UserFollowAuthorTestCase(TestCase):
+    
+#     def test_request_author_user_get(self):
+
+#         user = CustomUser.objects.create(
+#             username='temurbek', 
+#             first_name='Temurbek', 
+#             last_name='Yorkulov', 
+#             email='temur@gmail.com'
+#         )
+
+#         user.set_password('password1234')
+#         user.save()
+#         self.client.login(username='temurbek', password='password1234')
+
+#         author = Author.objects.create(
+#             first_name = 'Temurbek',
+#             last_name = 'Yorkulov',
+#             email = 'Yorkulov@gmail.com',
+#             bio = "He is very good author!",
+#         )
+
+#         request_ = RequestAuthorUser.objects.create(
+#             user = user,
+#             author = author,
+#             is_status = True,
+#         )
+
+#         response = self.client.get(reverse('users:user_follow_author'))
+
+#         self.assertEqual(response.status_code, 200)

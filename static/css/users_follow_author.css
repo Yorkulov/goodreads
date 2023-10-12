@@ -1,0 +1,19 @@
+.users_follow_author{
+    margin-top: 100px;
+}
+
+ol{
+    width: 400px;
+    margin: 0 auto;
+}
+
+li{
+    /* list-style: none; */
+    font-size: 24px;
+    margin: 15px 0;
+}
+
+a{
+    font-size: 24px;
+    margin-left: 10px;    
+}

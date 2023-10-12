@@ -1,0 +1,40 @@
+1. Asosiy sahifa Frontendi ustida ishlash
+sahifa uzunligi hozircha 2wh bu loyiha tanishtiruv qismi bo'ladi
+1 -->
+2.0 User Profile sahifasi ustida ishlash Frontend
+2.0 -->
+2.1 Author sahifasini Frontend qismi ustida ishlash u ham Author personal malumotlari va 
+shu authorga tegishli bo'lgan kitoblar va yana shu authorning kitoblariga 
+tegishli reviewlar chiqarilsin, chiqarishda paginationdan foydalaniladi
+2.1 -->
+3. Friend Requests and Friends:
+	Userlar Auhorlarga follow qilishi o'zaro chat orqali ular bilan real vaqtda
+	xabar almashishi mumkin qilish
+3 -->
+4. User profile sahifasini Frontend qismi ustida ishlash kamida 2 ta sahifa
+bunda notifications , o'zi qoldirgan reviewlar, obuna bo'lgan book
+authorlari bo'ladi
+4 -->			
+5. Hozirgacha yasalgan barcha viewlar uchun Unit testlar yozish
+5 -->
+6. 404 (Not Found) sahifasini yaratish va kerakli joylarga yo'naltirish
+6 -->
+7. 3.1 da Authorga message yuborish qismini qilish
+7 -->
+8. 3.2 da User va Author o'rtasida relationship uchun chat hosil qilish realtimeda message 
+yuborish va qabul qilish
+8 -->
+9. Asosiy sahifada Chats bo'limiga link berib Chat sahifasi dizayni ustida ishlash
+9 -->
+10. Forgot password [Password reset, Password reset confirm, Password change]
+10 -->
+11. Asosiy sahifani to'liq Responsive qilish va u yerdagi iconlar ustida ishlash
+12. Unit testlar barcha viewlar uchun
+13. Asosiy sahofa uchun statistika malumotlarini Backenddan olish
+
+
+Hozircha 12 ta task bazilarida jarayon davomida o'zgartirishlar kiritilishi mumkin
+Va bundan keyingi jarayonlar ham yozib ketilishi mumkin, yozilmasa bu tasklar bajarilgandan 
+keyin yana ro'yxat shakllantiriladi.
+Task bajarilsa --> belgisi qo'yib ketiladi tasklar tartib bo'yicha bajarilishi shart.
+Har bir task uchun o'rtacha 2 kun beriladi

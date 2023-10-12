@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block meta %}
+    <meta http-equiv="refresh" content="60" />  
+    {% comment %}
+        10 = 10 soniya
+    {% endcomment %}
+        
+{% endblock meta %}
+
+{% block title %}
+    Message To Author
+{% endblock title %}
+
+
+
+{% block link %}
+
+    <link rel="stylesheet" href="{% static 'css/author_message.css' %}" type="text/css">
+
+{% endblock link %}
+    
+
+
+{% block content %}
+    <div class="container">
+        <form method="POST" id="message-form">
+            {% csrf_token %}
+            <input type="text" id="comment_user" name="comment_user">
+            <button id="comment_button" type="submit">Yuborish</button>
+        </form>
+
+        {% for message in messages %}
+        {% if message.comment_user is not None %}
+            <p class="user" style="color: gray;">{{message.user}}</p>
+            <p class="comment" style="color: red;">{{message.comment_user}}</p>
+        {% elif message.comment_author is not None %}
+            <p class="user" style="color: gray; margin-left: 500px;">{{message.author}}</p>
+            <p class="comment" style="color: green; margin-left: 500px;">{{message.comment_author}}</p>
+        {% endif %}
+        {% endfor %}
+    </div>
+{% endblock content %}
+
+
+<script>
+
+</script>

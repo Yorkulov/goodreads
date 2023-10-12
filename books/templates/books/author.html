@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block link %}
+
+<link rel="stylesheet" href="{% static 'css/author.css' %}" type="text/css">
+    
+{% endblock link %}
+    
+
+{% block title %}
+    Book detail 
+{% endblock title %}
+    
+
+
+{% block content %}
+
+<div class="container-author">
+    <div class="author-page">
+        <div class="links">
+            {% if request_form.exists %}
+                <form method="POST">{% csrf_token %}
+                    <button class="btn btn-primary follow-button" type="submit">Unfollow</button>
+                </form>
+            {% else %}
+                <form method="POST">{% csrf_token %}
+                    <button class="btn btn-primary follow-button" type="submit">Follow</button>
+                </form>
+            {% endif %}
+            <a href="{% url 'books:author_message' author.pk %}" class="btn">User's chats</a>
+            <a href="{% url 'books:author_user_chat' author.pk user.pk %}" class="btn">Author's chat</a>
+            <div class="instagram"><i class="fa-brands fa-square-instagram"></i></div>
+            <div class="telegram"><i class="fa-brands fa-telegram"></i></div>
+            <div class="twitter"><i class="fa-brands fa-x-twitter"></i></div>
+            <div class="you-tube"><i class="fa-brands fa-youtube"></i></div>
+            <div class="facebook"><i class="fa-brands fa-facebook"></i></div>
+            <div class="whatsapp"><i class="fa-brands fa-square-whatsapp"></i></div>
+        </div>
+        <div class="main-page">
+            <div class="title">About the Author</div>
+            <img src="{{ author.user.profile_picture.url }}" alt="Picture" class="image">
+            <div class="personal-data">
+                <p>First name:</p> <span>{{author.first_name}}</span>
+                <br>    
+                <p>Last name:</p> <span>{{author.last_name}}</span>
+                <br>
+            </div>
+            <p class="bio">Bio:</p> <span class="bio-span">{{author.bio}}</span>
+        </div>
+        <div class="books">
+            {% for books in author_book %}
+            <div class="book">
+                <a href="{% url 'books:detail' books.book.pk %}">
+                <div class="book-title">{{books.book.title}}</div>
+                <img src="{{ books.book.default_picture.url }}" alt="" class="book-image">
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

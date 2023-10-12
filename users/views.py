@@ -1,11 +1,16 @@
+from base64 import urlsafe_b64decode
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
+from django.contrib.auth.views import PasswordResetConfirmView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.forms import ValidationError
 from django.shortcuts import redirect, render
 from django.views import View
 
+from books.models import Author, MessageToAuthor, RequestAuthorUser
 from users.forms import UserUpdateForm, UserCreateForm
+from users.models import CustomUser
 
 
 class RegisterView(View):
@@ -50,11 +55,12 @@ class LoginView(View):
 class ProfileView(LoginRequiredMixin, View):
 
     def get(self, request):
+        user = self.request.user
+        comments = MessageToAuthor.objects.filter(user=self.request.user, comment_user = None ).count()
+        authors = RequestAuthorUser.objects.filter(user=user)
         """Login qilingan yoki yuqligini tekshirish uchuun yozilgandi buning o'rniga LoginrequiredMixin"""
-        return render(request, 'users/profile.html', {'user': request.user })
-        # if request.user.is_authenticated:
-        #     return render(request, 'users/profile.html', {'user': request.user })
-        # return redirect('users:login')
+        return render(request, 'users/profile.html', {'user': request.user, 'comments': comments, 'authors': authors})
+
     
 
 class LogoutView(LoginRequiredMixin, View):
@@ -78,6 +84,8 @@ class ProfileEditView(LoginRequiredMixin, View):
             data=request.POST, 
             files=request.FILES
             )
+        
+
 
         if user_update_form.is_valid():
             user_update_form.save()
@@ -87,3 +95,24 @@ class ProfileEditView(LoginRequiredMixin, View):
         
         messages.warning(request, "Profile updated unsuccessfully!")
         return render(request, 'users/profile_edit.html', {'form': user_update_form})
+
+
+class UserFollowAuthorView(View):
+
+    def get(self, request):
+        user = self.request.user
+        authors = RequestAuthorUser.objects.filter(user=user)
+
+        return render(request, 'users/users_follow_author.html', {'authors': authors})
+
+class UserPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'registration/password_reset_confirm.html'
+
+    def get_user(self, uidb64):
+        try:
+            # urlsafe_base64_decode() decodes to bytestring
+            uid = urlsafe_b64decode(uidb64).decode()
+            user = CustomUser._default_manager.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist, ValidationError):
+            user = None
+        return user

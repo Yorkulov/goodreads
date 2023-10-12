@@ -1,0 +1,77 @@
+.book_detail{
+    margin: 100px auto;
+    width: 90%;
+}
+
+.book-detail-image{
+    margin-top: 20px;
+    width: 300px;
+    height: 400px;
+}
+
+.book{
+    width: 100%;
+    padding-top: 50px;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.image{
+    width: 300px;
+    margin: 0 20px;
+}
+
+.about{
+    width: 60%;
+}
+
+.about .book-detail-title{
+    font-size: 3rem;
+    font-family: cursive;
+}
+
+.about .book-author{
+    font-size: 2rem;
+    font-family: 'Times New Roman', Times, serif;
+    color: rgb(63, 52, 52);
+}
+
+.about .description{
+    font-size: 20px;
+    font-style: italic;
+    color: black;
+    margin-top: 10px;
+    line-height: 30px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.review-form{
+    margin: 100px 0;
+    width: 90%;
+}
+
+.reviews{
+    width: 90%;
+    margin: 0 auto;
+    font-size: 20px;
+    color: rgb(85, 81, 81);
+}
+
+.stars{
+    color: orange;
+}
+
+.item-comment{
+    font-size: 18px;
+    font-style: italic;
+    font-weight: 500;
+    color: black;
+}
+
+.comment-user-image{
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+}

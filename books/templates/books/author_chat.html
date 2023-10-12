@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+    Message To Author
+{% endblock title %}
+
+
+
+{% block link %}
+
+    <link rel="stylesheet" href="{% static 'css/author_message.css' %}" type="text/css">
+
+{% endblock link %}
+    
+
+
+{% block content %}
+    <div class="container">
+        {% for message in message_to_authors %}
+            <p>{{message.user}}</p>
+        {% endfor %}
+    </div>
+{% endblock content %}
+    
+    

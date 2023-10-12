@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from books.models import Book
+from books.models import Book, BookReview
 from users.models import CustomUser
 
 
@@ -25,6 +25,7 @@ class BooksTestCase(TestCase):
         self.assertTrue(books_count, 3)
 
 
+
     def test_no_books(self):
         response = self.client.get(reverse('books:list'))
 
@@ -39,6 +40,7 @@ class BooksTestCase(TestCase):
         self.assertContains(response, book1.title)
         self.assertContains(response, book1.description)
     
+
 
     def test_search_books(self):
         book1 = Book.objects.create(title='Sport', description='Book 1 description', isbn='87345623')
@@ -60,24 +62,148 @@ class BooksTestCase(TestCase):
         self.assertNotContains(response, book2.title)
         self.assertNotContains(response, book1.title)
 
-        
-# class BookReviewtestCase(TestCase):
-#     def test_add_review(self):
-#         book = Book.objects.create(title='Book 1', description='Book 1 description', isbn='35646383')
-#         user = CustomUser.objects.create(username='temur', first_name='Temurbek', last_name='Yorkulov', email='temur@gmail.com')
-#         user.set_password('password1234')
-#         user.save()
-        
-#         self.client.login(username='temurbek', password='password1234')
-        
-#         self.client.post(reverse('books:review', kwargs={'pk', book.pk}), data = {
-#             'stars_given': 3,
-#             'comment': 'Nive book'
-#         })
-#         book_review = book.reviews.all()
 
-#         self.assertEqual(book_review.count(), 1)
-#         self.assertEqual(book_review[0].stars_given, 3)
-#         self.assertEqual(book_review[0].comment, 'Nice book')
-#         self.assertEqual(book_review[0].book, book)
-#         self.assertEqual(book_review[0].user, user)
+
+        
+class BookReviewtestCase(TestCase):
+
+    def test_add_review(self):
+        book = Book.objects.create(
+            title='Book 1', 
+            description='Book 1 description', 
+            isbn='35646383'
+            )
+        user = CustomUser.objects.create(
+            username='temur', 
+            first_name='Temurbek', 
+            last_name='Yorkulov', 
+            email='temur@gmail.com'
+            )
+        user.set_password('password1234')
+        user.save()
+        
+        self.client.login(username='temur', password='password1234')
+        
+        self.client.post(reverse('books:review', kwargs={'pk': book.pk}),
+            data = {
+                'stars_given': 3,
+                'comment': 'Nice book'
+            }
+        )
+        book_review = book.reviews.all()
+
+        self.assertEqual(book_review.count(), 1)
+        self.assertEqual(book_review[0].stars_given, 3)
+        self.assertEqual(book_review[0].comment, 'Nice book')
+        self.assertEqual(book_review[0].book, book)
+        self.assertEqual(book_review[0].user, user)
+
+
+
+    def test_edit_review(self):
+        book = Book.objects.create(
+            title='Book 1', 
+            description='Book 1 description', 
+            isbn='35646383'
+            )
+        user = CustomUser.objects.create(
+            username='temur', 
+            first_name='Temurbek', 
+            last_name='Yorkulov', 
+            email='temur@gmail.com'
+            )
+        user.set_password('password1234')
+        user.save()
+
+        self.client.login(username='temur', password='password1234')
+
+        self.client.post(reverse('books:review', kwargs={'pk': book.pk}),
+            data = {
+                'stars_given': 3,
+                'comment': 'Nice book'
+            }
+        )
+        book_review = book.reviews.all()
+        review = book_review[0]
+
+        response = self.client.post(reverse('books:review_edit', kwargs={'book_pk': book.pk, 'review_pk': review.pk}), 
+                         data = {
+                             'stars_given': 4,
+                             'comment': 'Very nice book'
+                         })
+        
+        review.refresh_from_db()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(review.stars_given, 4)
+        self.assertEqual(review.comment, 'Very nice book')
+        self.assertEqual(response.url, reverse('books:detail', kwargs={'pk': book.pk}))
+
+
+
+    def test_delete_confirm_review(self):
+        book = Book.objects.create(
+            title='Book 1', 
+            description='Book 1 description', 
+            isbn='35646383'
+            )
+        user = CustomUser.objects.create(
+            username='temur', 
+            first_name='Temurbek', 
+            last_name='Yorkulov', 
+            email='temur@gmail.com'
+            )
+        user.set_password('password1234')
+        user.save()
+
+        self.client.login(username='temur', password='password1234')
+
+        self.client.post(reverse('books:review', kwargs={'pk': book.pk}),
+            data = {
+                'stars_given': 3,
+                'comment': 'Nice book'
+            }
+        )
+
+        book_review = book.reviews.all()
+        review = book_review[0]
+
+        response = self.client.get(reverse('books:review_confirm_delete', kwargs={'book_pk': book.pk, 'review_pk': review.pk}))
+
+        self.assertEqual(response.status_code, 200)
+
+
+    
+    def test_delete_review(self):
+        book = Book.objects.create(
+            title='Book 1', 
+            description='Book 1 description', 
+            isbn='35646383'
+            )
+        user = CustomUser.objects.create(
+            username='temur', 
+            first_name='Temurbek', 
+            last_name='Yorkulov', 
+            email='temur@gmail.com'
+            )
+        user.set_password('password1234')
+        user.save()
+
+        self.client.login(username='temur', password='password1234')
+
+        self.client.post(reverse('books:review', kwargs={'pk': book.pk}),
+            data = {
+                'stars_given': 3,
+                'comment': 'Nice book'
+            }
+        )
+
+        book_review = book.reviews.all()
+        review = book_review[0]
+
+        response = self.client.get(reverse('books:review_delete', kwargs={'book_pk': book.pk, 'review_pk': review.pk}))
+
+        count = book_review.count()
+
+        self.assertEqual(count, 0)
+        self.assertFalse(BookReview.objects.filter(pk=review.pk).exists())
