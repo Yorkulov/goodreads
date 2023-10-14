@@ -29,8 +29,9 @@ yuborish va qabul qilish
 10. Forgot password [Password reset, Password reset confirm, Password change]
 10 -->
 11. Asosiy sahifani to'liq Responsive qilish va u yerdagi iconlar ustida ishlash
+11 -->
 12. Unit testlar barcha viewlar uchun
-13. Asosiy sahofa uchun statistika malumotlarini Backenddan olish
+13. Asosiy sahifa uchun statistika malumotlarini Backenddan olish
 
 
 Hozircha 12 ta task bazilarida jarayon davomida o'zgartirishlar kiritilishi mumkin

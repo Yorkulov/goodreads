@@ -1,0 +1,93 @@
+.home{
+    margin: 0;
+    padding: 100px auto;
+    background-color: rgb(186, 181, 181);
+}
+
+.home > h2{
+    font-size: 4rem;
+    padding-top: 160px;
+    padding-bottom: 20px;
+    font-weight: 400;
+    font-style: normal;
+    font-family: cursive;
+    color: black;
+    text-align: center;
+}
+
+.card{
+    width: 100%;
+    background-color: rgb(193, 168, 135) !important;
+    margin-bottom: 15px;
+    min-height: 190px;
+    padding: 12px;
+}
+
+.media{
+    display: flex;
+    align-content: start;
+}
+
+.review-image{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+.media-body{
+    width: 90%;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.full-name, .username{
+    display: inline-block;
+    font-size: 24px;
+    font-family: cursive;
+    font-weight: 600;
+    color: black;
+    margin: 0 20px;
+}
+
+.create-time{
+    font-size: 20px;
+    color: rgb(87, 82, 82);
+    margin: 0 20px;
+}
+
+.notification a{
+    font-size: 20px;
+    color: red;
+    margin: 0 20px;
+    text-decoration: none;
+    color: white !important;
+}
+
+.notification a small{
+    margin: 0 10px;
+    font-size: 20px;
+    color: black;
+}
+
+.comment-text{
+    width: 90%;
+    margin: 10px 20px;
+    display: inline-block;
+    font-size: 20px;
+    color: black;
+    font-weight: 500;
+    font-style: italic;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.comment-like{
+    font-size: 2rem;
+    color: white;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.comment-like-active{
+    color: red;
+}

@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponseNotFound
 from django.core.paginator import Paginator
-from books.models import BookReview
+from books.models import Author, Book, BookReview
+from users.models import CustomUser
 
 
 def custom_404_page(request, exception=None):
@@ -9,12 +10,18 @@ def custom_404_page(request, exception=None):
 
 def lending_page(request):
     numbers = "".join(str(x) for x in range(10))
-    return render(request, 'landing_page.html', {'numbers': numbers})
+    data = {
+        'authors': Author.objects.count(),
+        'books': Book.objects.count(),
+        'books_review': BookReview.objects.count(),
+        'users': CustomUser.objects.count(),
+    }
+    return render(request, 'landing_page.html', {'numbers': numbers, 'data': data})
 
 def home_page(request):
     book_reviews = BookReview.objects.all().order_by('-created_at')
     
-    page_size = request.GET.get('page_size', 4)
+    page_size = request.GET.get('page_size', 10)
     paginator = Paginator(book_reviews, page_size)
 
     page_num = request.GET.get('page', 1)

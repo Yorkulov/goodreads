@@ -77,6 +77,12 @@
     border-color: chocolate;
 }
 
+.container-pages{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 .container-pages > p{
     position: fixed;
     top: 100px;

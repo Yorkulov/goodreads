@@ -1,25 +1,27 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-
+{% load static %}
 
 {% block title %}
     Profile edit
 {% endblock title %}
 
 
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/small_page.css' %}" type="text/css">
+{% endblock link %}
+    
 
 
 {% block content %}
 
-    <div class="div row m-3">
-        <h2>Profile edit</h2>
-        <div class="col-4">
+    <div class="form-small">
+        <h2 class="title">Profile edit</h2>
             <form method="POST" enctype="multipart/form-data">{% csrf_token %} 
                 {{form | crispy}}
                 
-                <button type="submit" class="btn btn-primary w-100">Changes save</button>
+                <button type="submit" class="btn btn-primary w-100 button_100">Changes save</button>
             </form>
-        </div>
     </div>
 
 {% endblock content %}

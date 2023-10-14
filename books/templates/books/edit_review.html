@@ -1,16 +1,25 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
 
 {% block title %}
     Review edit
 {% endblock title %}
 
 
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/small_page.css' %}" type="text/css">
+{% endblock link %}
+    
+
 
 {% block content %}
-    <form method="POST">{% csrf_token %}
-        {{ review_form | crispy}}
-        <button class="btn btn-outline-primary" type="submit">Save</button>
-    </form>
+    <div class="form-small">
+        <h2 class="title">Edit Review</h2>
+        <form method="POST">{% csrf_token %}
+            {{ review_form | crispy}}
+            <button class="btn btn-outline-primary button_100" type="submit">Save</button>
+        </form>
+    </div>
 {% endblock content %}
     

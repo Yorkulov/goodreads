@@ -1,18 +1,26 @@
 {% extends 'base.html' %}
-
+{% load static %}
 
 {% block title %}
     Delete Review
 {% endblock title %}
 
 
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/small_page.css' %}" type="text/css">
+{% endblock link %}
+    
+
 
 {% block content %}
-    <form method="GET">{% csrf_token %}
-        <p>stars: {{review.stars_given }}</p>
-        <p>{{review.comment}}</p>
-        <a class="btn btn-outline-info" href="{% url 'books:detail' book.pk %}">Back</a>
-        <a class="btn btn-outline-danger" href="{% url 'books:review_delete' book.pk review.pk %}">Delete</a>
-    </form>
+    <div class="form-small">
+        <h2 class="title">Delete Review Confirm</h2>
+        <form method="GET">{% csrf_token %}
+            <p><b>stars:</b> {{review.stars_given }}</p>
+            <p><b>comment:</b> <span>{{review.comment}}</p>
+            <a class="btn btn-outline-info button_50" href="{% url 'books:detail' book.pk %}">Back</a>
+            <a class="btn btn-outline-danger button_50" href="{% url 'books:review_delete' book.pk review.pk %}">Delete</a>
+        </form>
+    </div>
 {% endblock content %}
     

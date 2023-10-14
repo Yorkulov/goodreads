@@ -15,12 +15,8 @@
 
 {% block content %}
     <div class="body">
-        <img class="background-image" src="{{ user.profile_picture.url }}" alt="Picture">
+        {% comment %} <img class="background-image" src="{{ user.profile_picture.url }}" alt="Picture"> {% endcomment %}
         <div class="profile-container">
-            <div class="links">
-                <a href="{% url 'users:user_follow_author' %}" class="authors"><i class="bi bi-people-fill"></i>Authors</a>
-                <a href="#" class="comment"><i class="bi bi-chat-fill"></i>{{comments}}</a>
-            </div>
             <div class="main">
                 <aside class="aside">
                     <div>
@@ -58,8 +54,10 @@
                 </section>
             </div>
             <div class="links">
-                <a href="#" class="likes"><i class="bi bi-heart-fill"></i></a>
+                <a href="{% url 'users:user_follow_author' %}" class="authors"><i class="bi bi-people-fill"></i></a>
                 <a href="#" class="saved"><i class="bi bi-cloud-download-fill"></i></a>
+                <a href="#" class="comment"><i class="bi bi-chat-fill"></i><span class="notification-a">{{comments}}</span></a>
+                <a href="#" class="likes"><i class="bi bi-heart-fill"></i></a>
                 <a href="#" class="send"><i class="bi bi-send-fill"></i></a>
             </div>
         </div>

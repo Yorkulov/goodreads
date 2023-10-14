@@ -1,24 +1,27 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-
+{% load static %}
 
 {% block title %}
     Login
 {% endblock title %}
 
 
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/small_page.css' %}" type="text/css">
+{% endblock link %}
+    
 
 {% block content %}
 
-    <div class="div row m-3">
-        <h2>Login</h2>
-        <div class="col-4">
-            <form method="POST">{% csrf_token %}
-                {{form | crispy}}
-                <button type="submit" class="btn btn-primary w-100 mb-3">Log in</button> <span>If you are not registered? <a href="{% url 'users:register' %}">You can register here.</a></span>
-                <a href="{% url 'users:reset_password' %}">Forgot password</a>
-            </form>
-        </div>
+    <div class="form-small login">
+        <h2 class="title">Login</h2>
+        <form method="POST">{% csrf_token %}
+            {{form | crispy}}
+            <button type="submit" class="btn btn-primary w-100 mb-3">Log in</button>
+            <p><span>If you are not registered? <a href="{% url 'users:register' %}">You can register here.</a></span></p>
+            <p><a href="{% url 'users:reset_password' %}">Forgot password</a></p>
+        </form>
     </div>
 
 {% endblock content %}

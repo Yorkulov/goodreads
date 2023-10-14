@@ -1,0 +1,70 @@
+.form-small{
+    margin: 100px auto;
+    width: 80%;
+}
+
+.second-form-small{
+    width: 80%;
+    margin: 10px auto 30px;
+    text-align: center;
+    font-size: 24px;
+}
+
+.second-form-small a{
+    text-decoration: none;
+    color: red;
+}
+
+.password_reset_send .subtitle {
+    margin: 7px;
+    padding: 0;
+    color: rgb(15, 8, 29);
+}
+
+.login{
+    width: 60%;
+}
+
+.title{
+    font-size: 3rem;
+    font-weight: 500;
+    color: black;
+    font-family: cursive;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.subtitle{
+    font-size: 22px;
+    font-weight: 500;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    padding: 15px;
+    color: rgb(97, 107, 107);
+}
+
+form{
+    font-size: 20px !important;
+    font-weight: 500;
+    color: black;
+    font-style: italic;
+    padding: 15px 10px;
+}
+
+.button_50, .button_100{
+    font-size: 20px !important;
+    font-weight: 500 !important;
+}
+
+.button_100{
+    width: 100%;
+}
+
+.button_50{
+    display: inline-block;
+    width: 45%;
+}
+
+#hint_id_username, #hint_id_new_password1 li{
+    color: rgb(233, 120, 55) !important;
+}
+

@@ -1,17 +1,20 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-
+{% load static %}
 
 {% block title %}
     Registiration
 {% endblock title %}
     
 
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/small_page.css' %}" type="text/css">
+{% endblock link %}
+    
 
 {% block content %}
-    <div class="row d-flex justify-content-center">
-        <div class="col-6">
-            <h1 class="m-3">Registration</h1>
+    <div class="form-small">
+            <h2 class="title">Registration</h2>
 
             <form method="POST" enctype="multipart/form-data" class="m-3">{% csrf_token %}
         
@@ -32,9 +35,8 @@
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password"> <hr><br> {% endcomment %}
         
-                <button type="submit" class="btn btn-primary w-100">Submit</button> <hr><br> 
+                <button type="submit" class="btn btn-primary button_100">Submit</button>
             </form>
-        </div>
     </div>
 {% endblock content %}
     

@@ -1,57 +1,70 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
   Book reviews
 {% endblock %}
 
+
+{% block link %}
+  <link rel="stylesheet" href="{% static 'css/home.css' %}" type="text/css">
+{% endblock link %}
+  
+
 {% block content %}
-  <h2>Book Reviews</h2>
+  <div class="home">
+    <h2>Book Reviews</h2>
     <div class="container posts-content">
-      <div class="row">
+      <div class="reviews">
         {% for review in page_obj %}
-        <div class="col-6 home-card">
-          <div class="card mb-4">
-            <div class="card-body">
-              <div class="media mb-3">
-                <img src="{{ review.user.profile_picture.url }}" class="d-block ui-w-40 rounded-circle" alt="" />
-                <div class="media-body ml-3 mt-3     d-flex justify-content-between">
-                  {% if review.first_name %} 
-                    <span>{{review.user.first_name}} {{review.user.last_name}}</span>
-                  {% else %}
-                    {{review.user.username}}
-                  {% endif %}
-                  <span class="text-muted small">{{review.created_at}}</span>
+            <div class="card">
+                <div class="media">
+                  <img src="{{ review.user.profile_picture.url }}" class="review-image" alt="" />
+                  <div class="media-body">
+                    {% if review.user.first_name %}
+                      <span class="full-name">{{ review.user.first_name }} {{ review.user.last_name }}</span>
+                    {% else %}
+                      <span class="username">{{ review.user.username }}</span>
+                    {% endif %}
+                    <span class="create-time">{{ review.created_at }}</span>
 
-                  <span>
-                    <a href="javascript:void(0)" class="d-inline-block text-muted"><strong>123</strong> <small class="align-middle">Likes</small></a>
-                    <a href="javascript:void(0)" class="d-inline-block text-muted ml-3"><strong>{{book_reviews.count}}</strong> <small class="align-middle">Comments</small></a>
-                    <a href="javascript:void(0)" class="d-inline-block text-muted ml-3"><small class="align-middle">Repost</small></a>
-                  </span>
+                    <span class="notification">
+                      <a href="javascript:void(0)" class="d-inline-block text-muted"><strong>123</strong> <small>Likes</small></a>
+                      {% comment %} <a href="javascript:void(0)" class="d-inline-block text-muted ml-3"><strong>{{ book_reviews.count }}</strong> <small class="align-middle">Comments</small></a> {% endcomment %}
+                    </span>
+                    <p class="comment-text">{{ review.comment }}</p>
+                  </div>
                 </div>
-              </div>
-
-              <p>{{review.comment}}</p>
-              <a href="javascript:void(0)" class="ui-rect ui-bg-cover" style="background-image: url('{{review.book_id.default_picture.url}}');"></a>
+                <a class="comment-like" href=""><i class="bi bi-heart-fill"></i></a>
             </div>
-          </div>
-        </div>
         {% endfor %}
       </div>
     </div>
 
     <nav>
-        <ul class="pagination">
-            {% if page_obj.has_previous %}
-                <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
-                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_numer }}">previous</a></li>
-            {% endif %}
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page=1">&laquo; first</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_numer }}">previous</a>
+          </li>
+        {% endif %}
 
-            <li class="page-item active"><a href="#" class="page-link">{{page_obj.number}}</a></li>
+        <li class="page-item active">
+          <a href="#" class="page-link">{{ page_obj.number }}</a>
+        </li>
 
-            {% if page_obj.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last&raquo;</a></li>
-            {% endif %}
-        </ul>
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last&raquo;</a>
+          </li>
+        {% endif %}
+      </ul>
     </nav>
+  </div>
 {% endblock %}
