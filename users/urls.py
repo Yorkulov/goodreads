@@ -2,7 +2,7 @@ from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, 
 from django.urls import path, reverse_lazy
 from django.contrib.auth import views as auth_views
 
-from users.views import LoginView, LogoutView, ProfileEditView, ProfileView, RegisterView, UserFollowAuthorView
+from users.views import LoginView, LogoutView, ProfileEditView, ProfileView, RegisterView, UserFollowAuthorView, AuthorFollowUserView
 
 app_name = "users"
 
@@ -35,4 +35,6 @@ urlpatterns = [
     path('profile/edit/', ProfileEditView.as_view(), name='profile_edit'),
     path('profile/followers/', UserFollowAuthorView.as_view(),
          name='user_follow_author'),
+    path('author/followers/', AuthorFollowUserView.as_view(), 
+        name='author_follow_user'),
 ]

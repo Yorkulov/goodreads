@@ -4,12 +4,12 @@ from django.urls import include, path, re_path
 from django.conf.urls.static import static
 from django.conf.urls import handler404
 
-from .views import home_page, lending_page, custom_404_page
+from .views import HomePageView, lending_page, custom_404_page
 
 
 urlpatterns = [
     path('', lending_page, name='lending_page'),
-    path('home/', home_page, name='home_page'),
+    path('home/', HomePageView.as_view(), name='home_page'),
 
     path('users/', include('users.urls')),
     path('books/', include('books.urls')),

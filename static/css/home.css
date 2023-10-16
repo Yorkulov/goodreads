@@ -83,6 +83,9 @@
 .comment-like{
     font-size: 2rem;
     color: white;
+    border: none;
+    outline: none;
+    background-color: rgb(193, 168, 135) !important;
     position: absolute;
     top: 20px;
     right: 20px;
@@ -91,3 +94,22 @@
 .comment-like-active{
     color: red;
 }
+
+.home-form{
+    width: 70%;
+    margin: 50px auto;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 70px;
+}
+
+.home-form input, button{
+    font-size: 22px !important;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: black;
+}
+
+.home-form button {
+    width: 200px;
+}
+

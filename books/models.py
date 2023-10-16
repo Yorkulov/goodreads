@@ -8,8 +8,9 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class Book(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
-    isbn = models.CharField(max_length=17)
+    isbn = models.CharField(max_length=17, unique=True)
     default_picture = models.ImageField(default='default_book.png')
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.title
@@ -18,9 +19,8 @@ class Book(models.Model):
 class Author(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    email = models.EmailField()
     bio = models.TextField()
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -70,4 +70,3 @@ class MessageToAuthor(models.Model):
 
     def __str__(self):
         return f"{self.user.username}"
-

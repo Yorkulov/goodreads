@@ -42,6 +42,13 @@
     color: rgb(97, 107, 107);
 }
 
+.small-txt{
+    font-size: 22px;
+    font-weight: 600;
+    padding: 0 15px;
+    color: rgb(59, 23, 23);
+}
+
 form{
     font-size: 20px !important;
     font-weight: 500;

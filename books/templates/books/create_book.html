@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/small_page.css' %}" type="text/css">  
+{% endblock link %}
+
+
+{% block content %}
+    <div class="form-small">
+        <h2 class="title">Create Book</h2>
+        <form method="POST" enctype="multipart/form-data"> {% csrf_token %}
+            {{ form | crispy }}
+            <button class="btn btn-primary button_100" type="submit">Create</button>
+        </form>
+    </div>
+{% endblock content %}
+    
+    

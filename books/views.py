@@ -1,11 +1,12 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import View
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.views.generic import ListView, DetailView
-from books.forms import AuthorUserChatForm, BookReviewForm, MessageToAuthorForm, RequestAuthorUserForm
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from books.forms import AuthorForm, AuthorUserChatForm, BookForm, BookReviewForm, MessageToAuthorForm, RequestAuthorUserForm
 from books.models import Author, Book, BookAuthor, BookReview, MessageToAuthor, RequestAuthorUser
 from users.models import CustomUser
 
@@ -40,32 +41,24 @@ class AuthorView(View):
     
     def get(self, request, pk):
         author = Author.objects.get(pk=pk)
-        request_form = RequestAuthorUser.objects.filter(author=author)
+        user = self.request.user
+        request_form = RequestAuthorUser.objects.filter(user=user, author=author).exists()
         author_book = BookAuthor.objects.filter(author=author.pk)
-        return render(request, 'books/author.html', {'author': author, 'request_form': request_form, 'author_book': author_book})
+        return render(request, 'books/author.html', {'user': user,'author': author, 'request_form': request_form, 'author_book': author_book})
         
 
-class AuthorChatView(View):
-
-    def get(self, request, pk):
-        author = Author.objects.get(pk=pk)
-        message_to_authors = MessageToAuthor.objects.filter(author=author)
-
-        return render(request, 'books/author_chat.html', {'message_to_authors': message_to_authors})
-
-
-class AuthorUserChatView(View):
+class AuthorUserChatView(LoginRequiredMixin, View):
 
     def post(self, request, pk, user_pk):
         author = Author.objects.get(pk=pk)
-        user = CustomUser.objects.get(pk=user_pk)
+        user = self.request.user
         form = AuthorUserChatForm(data=request.POST)
 
         if form.is_valid():
             MessageToAuthor.objects.create(
                 user=user,
                 author=author,
-                comment_author=form.cleaned_data['comment_author']
+                comment_user=form.cleaned_data['comment_user']
             )
             messages.success(request, 'Send message')
             return redirect('books:author_user_chat', pk=pk, user_pk=user.pk)
@@ -77,17 +70,17 @@ class AuthorUserChatView(View):
     def get(self, request, pk, user_pk):
         author = Author.objects.get(pk=pk)
         user = CustomUser.objects.get(pk=user_pk)
-        messages = MessageToAuthor.objects.filter(author=author, user=user).order_by('-created_at')
+        message = MessageToAuthor.objects.filter(author=author, user=user).order_by('-created_at')
 
-        return render(request, 'books/author_user_chat.html', {'messages': messages, 'user': user})
+        return render(request, 'books/author_user_chat.html', {'message': message, 'user': user, 'author': author})
     
 
 
-class MessageToAuthorView(View):
+class MessageToAuthorView(LoginRequiredMixin, View):
 
     def post(self, request, pk):
-        user = self.request.user
-        author = Author.objects.get(pk=pk)
+        user = CustomUser.objects.get(pk=pk)
+        author = Author.objects.get(user=self.request.user)
         message_form = MessageToAuthorForm(data=request.POST)
 
         if message_form.is_valid():
@@ -95,7 +88,7 @@ class MessageToAuthorView(View):
             MessageToAuthor.objects.create(
                 user = user,
                 author = author,
-                comment_user = message_form.cleaned_data['comment_user'],
+                comment_author = message_form.cleaned_data['comment_author'],
             )
 
             messages.success(request, 'Send message')
@@ -107,11 +100,11 @@ class MessageToAuthorView(View):
     
 
     def get(self, request, pk):
-        author = Author.objects.get(pk=pk)
-        user = self.request.user
-        messages = MessageToAuthor.objects.filter(author=author, user=user).order_by('-created_at')
+        user = CustomUser.objects.get(pk=pk)
+        author = Author.objects.get(user=self.request.user)
+        message = MessageToAuthor.objects.filter(author=author, user=user).order_by('-created_at')
 
-        return render(request, 'books/message_author.html', {'messages': messages})
+        return render(request, 'books/message_author.html', {'message': message})
         
 
 
@@ -186,7 +179,7 @@ class BookReviewView(View):
             return render(request, 'books/books_detail.html', {'book': book, 'book_review': book_review})
     
     
-class BookReviewEditView(View):
+class BookReviewEditView(LoginRequiredMixin, View):
 
     def get(self, request, book_pk, review_pk):
         book = Book.objects.get(pk=book_pk)
@@ -207,7 +200,7 @@ class BookReviewEditView(View):
         return render(request, 'books/edit_review.html', {'book': book, 'review': review, 'review_form': review_form})
     
 
-class BookReviewConfirmDeleteView(View):
+class BookReviewConfirmDeleteView(LoginRequiredMixin, View):
     
     def get(self, request, book_pk, review_pk):
         book = Book.objects.get(pk=book_pk)
@@ -227,6 +220,65 @@ class BookReviewDeleteView(LoginRequiredMixin, View):
 
         return redirect(reverse('books:detail', kwargs={'pk': book.pk}))
 
+
+class CreateBookView(UserPassesTestMixin, CreateView):
+    form_class = BookForm
+    queryset = Book.objects.all()
+    success_url = reverse_lazy('lending_page')
+    template_name = 'books/create_book.html'
+
+
+class UpdateBookView(UserPassesTestMixin, UpdateView):
+    form_class = BookForm
+    queryset = Book.objects.all()
+    template_name = 'books/edit_book.html'        
+
+    def get_success_url(self):
+        return reverse('books:detail', kwargs={'pk': self.object.pk})
+
+
+class DeleteBookView(UserPassesTestMixin, DeleteView):
+    queryset = Book.objects.all()
+    template_name = 'books/delete_book.html'
+    success_url = reverse_lazy('lending_page')
+
+
+class CreateAuthorView(LoginRequiredMixin, View):
+    
+    def get(self, request):
+        form = AuthorForm()
+        return render(request, 'books/create_author.html', {'form': form})
+
+
+    def post(self, request):
+        form = AuthorForm(data=request.POST)
+        if not Author.objects.filter(user=self.request.user).exists():
+            if form.is_valid():
+                Author.objects.create(
+                    first_name = form.cleaned_data['first_name'],
+                    last_name = form.cleaned_data['last_name'],
+                    bio = form.cleaned_data['bio'],
+                    user = self.request.user
+                )
+
+                return redirect(reverse('users:profile'))
+        else:
+            messages.success(request, 'Siz author lavozimidasiz')
+        return render(request, 'books/create_author.html', {'form': form})
+
+class UpdateAuthorView(LoginRequiredMixin, UpdateView):
+    form_class = AuthorForm
+    queryset = Author.objects.all()
+    template_name = 'books/edit_author.html'
+
+    def get_success_url(self):
+        return reverse('books:author_detail', kwargs={'pk': self.object.pk})
+
+
+class DeleteAuthorView(LoginRequiredMixin, DeleteView):
+    queryset = Author.objects.all()
+    template_name = 'books/delete_author.html'
+    success_url = reverse_lazy('profile')
 
     
 

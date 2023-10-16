@@ -33,6 +33,7 @@ from users.models import CustomUser
 # Formani ModelFormdagi ko'rinishi
 class UserCreateForm(forms.ModelForm):
     email = forms.EmailField(required=True)
+    password = forms.PasswordInput()
 
     class Meta:
         model = CustomUser

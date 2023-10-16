@@ -75,3 +75,39 @@
     height: 90px;
     border-radius: 50%;
 }
+
+.edit-button, .delete-button{
+    display: inline-block;
+    width: 200px;
+    font-size: 22px;
+    font-family: cursive;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 6px 15px;
+    border: 2px solid red;
+    background-color: rgb(161, 166, 170);
+    text-align: center;
+    border-radius: 7px;
+    letter-spacing: 1px;
+}
+
+.edit-button{
+    position: absolute;
+    top: 130px;
+    right: 100px;
+}
+
+.delete-button{
+    position: absolute;
+    top: 130px;
+    right: 320px;
+}
+
+.review{
+    margin-top: 120px;
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 400;
+    font-family: cursive;
+}

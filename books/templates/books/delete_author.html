@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/small_page.css' %}" type="text/css">  
+{% endblock link %}
+
+
+{% block content %}
+    <div class="form-small">
+        <h2 class="title">Delete Author</h2>
+        <p class="subtitle">First name: {{author.first_name}}</p>
+        <p class="subtitle">Last name: {{author.last_name}}</p>
+        <form method="POST">{% csrf_token %}
+            <button class="btn btn-danger button_100" type="submit">Delete</button>
+        </form>
+    </div>
+{% endblock content %}
+    
+    

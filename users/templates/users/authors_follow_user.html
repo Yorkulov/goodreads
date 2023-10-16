@@ -12,8 +12,8 @@
 {% block content %}
   <div class="users_follow_author">
     <ol>
-      {% for author in authors %}
-        <li><a href="{% url 'books:author_detail' author.author.pk %}">{{ author.author.first_name }} {{ author.author.last_name }}</a></li>
+      {% for item in users %}
+        <li><a href="{% url 'books:author_message' item.author.pk %}"> {{ item.user.username }} </a></li>
       {% endfor %}
     </ol>
   </div>

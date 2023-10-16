@@ -216,7 +216,7 @@ section{
 
 
 .links{
-  width: 90%;
+  width: 80%;
   height: auto;
   display: flex;
   flex-direction: row;
@@ -287,4 +287,23 @@ section{
   font-weight: 500;
   font-family: sans-serif;
   color: #ffffff;
+}
+
+.create-button{
+  display: inline-block;
+  position: absolute;
+  width: 300px;
+  font-size: 22px;
+  top: 50px;
+  font-family: cursive;
+  color: rgb(0, 0, 0);
+  font-weight: 600;
+  right: 60px;
+  text-decoration: none;
+  padding: 6px 15px;
+  border: 2px solid red;
+  background-color: rgb(255, 255, 255);
+  text-align: center;
+  border-radius: 7px;
+  letter-spacing: 1px;
 }

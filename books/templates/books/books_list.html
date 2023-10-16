@@ -19,6 +19,9 @@
                     <input type="text" class="form-control m-1" placeholder="Search" name="q" value="{{search_query}}">
                     <button class="btn btn-success m-1">Search</button>
                 </form>
+                {% if user.is_superuser %}
+                <a href="{% url 'books:book_create' %}" class="create-book-button">Create Book</a>
+                {% endif %}
         {% if page_obj %}
                 {% for book in page_obj %}
                     <div class="books">

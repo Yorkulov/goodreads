@@ -12,7 +12,7 @@
 {% endblock meta %}
 
 {% block title %}
-    Message To Author
+    Message To User
 {% endblock title %}
 
 
@@ -27,19 +27,29 @@
 
 {% block content %}
     <div class="container">
+        <div class="user-info">
+            <h2 class="user_name">  
+            {% if user.first_name is None %}
+                {{user.first_name}} {{user.last_name}}
+            {% else %}
+                {{user.username}} 
+            {% endif %}
+            </h2>
+            <img class="user_image" src="{{ user.profile_picture.url }}" alt="Picture">
+        </div>
         <form method="POST" id="message-form">
             {% csrf_token %}
-            <input type="text" id="comment_user" name="comment_user">
+            <input type="text" id="comment_user" name="comment_author">
             <button id="comment_button" type="submit">Yuborish</button>
         </form>
 
-        {% for message in messages %}
-        {% if message.comment_user is not None %}
-            <p class="user" style="color: gray;">{{message.user}}</p>
-            <p class="comment" style="color: red;">{{message.comment_user}}</p>
-        {% elif message.comment_author is not None %}
-            <p class="user" style="color: gray; margin-left: 500px;">{{message.author}}</p>
-            <p class="comment" style="color: green; margin-left: 500px;">{{message.comment_author}}</p>
+        {% for msg in message %}
+        {% if msg.comment_user is not None %}
+            <p class="user" style="color: gray;">{{msg.user}}</p>
+            <p class="comment" style="color: red;">{{msg.comment_user}}</p>
+        {% elif msg.comment_author is not None %}
+            <p class="user" style="color: gray; margin-left: 500px;">{{msg.author}}</p>
+            <p class="comment" style="color: green; margin-left: 500px;">{{msg.comment_author}}</p>
         {% endif %}
         {% endfor %}
     </div>

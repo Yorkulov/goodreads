@@ -16,6 +16,10 @@
     <h2>Book Reviews</h2>
     <div class="container posts-content">
       <div class="reviews">
+        <form class="home-form" method="get">
+          <input type="text" class="form-control m-1" placeholder="Search" name="q" value="{{search_query}}">
+          <button class="btn btn-success m-1">Search</button>
+      </form>
         {% for review in page_obj %}
             <div class="card">
                 <div class="media">
@@ -27,15 +31,9 @@
                       <span class="username">{{ review.user.username }}</span>
                     {% endif %}
                     <span class="create-time">{{ review.created_at }}</span>
-
-                    <span class="notification">
-                      <a href="javascript:void(0)" class="d-inline-block text-muted"><strong>123</strong> <small>Likes</small></a>
-                      {% comment %} <a href="javascript:void(0)" class="d-inline-block text-muted ml-3"><strong>{{ book_reviews.count }}</strong> <small class="align-middle">Comments</small></a> {% endcomment %}
-                    </span>
                     <p class="comment-text">{{ review.comment }}</p>
                   </div>
                 </div>
-                <a class="comment-like" href=""><i class="bi bi-heart-fill"></i></a>
             </div>
         {% endfor %}
       </div>

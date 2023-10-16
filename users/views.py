@@ -8,7 +8,7 @@ from django.forms import ValidationError
 from django.shortcuts import redirect, render
 from django.views import View
 
-from books.models import Author, MessageToAuthor, RequestAuthorUser
+from books.models import Author, BookReview, MessageToAuthor, RequestAuthorUser
 from users.forms import UserUpdateForm, UserCreateForm
 from users.models import CustomUser
 
@@ -55,11 +55,16 @@ class LoginView(View):
 class ProfileView(LoginRequiredMixin, View):
 
     def get(self, request):
-        user = self.request.user
+        user = CustomUser.objects.get(pk=self.request.user.pk)
         comments = MessageToAuthor.objects.filter(user=self.request.user, comment_user = None ).count()
-        authors = RequestAuthorUser.objects.filter(user=user)
-        """Login qilingan yoki yuqligini tekshirish uchuun yozilgandi buning o'rniga LoginrequiredMixin"""
-        return render(request, 'users/profile.html', {'user': request.user, 'comments': comments, 'authors': authors})
+        authors = RequestAuthorUser.objects.filter(user=user).count()
+        users_comment = BookReview.objects.filter(user=user).count()
+        users_author = Author.objects.filter(user=user).exists()
+        if Author.objects.filter(user=user).exists():
+            author = Author.objects.get(user=user)
+        else:
+            author = None
+        return render(request, 'users/profile.html', {'author': author, 'user': request.user, 'comments': comments, 'authors': authors, 'users_comment': users_comment, 'users_author': users_author})
 
     
 
@@ -85,8 +90,6 @@ class ProfileEditView(LoginRequiredMixin, View):
             files=request.FILES
             )
         
-
-
         if user_update_form.is_valid():
             user_update_form.save()
             messages.success(request, "Profile updated successfully!")
@@ -97,13 +100,23 @@ class ProfileEditView(LoginRequiredMixin, View):
         return render(request, 'users/profile_edit.html', {'form': user_update_form})
 
 
-class UserFollowAuthorView(View):
+class UserFollowAuthorView(LoginRequiredMixin, View):
 
     def get(self, request):
         user = self.request.user
         authors = RequestAuthorUser.objects.filter(user=user)
 
         return render(request, 'users/users_follow_author.html', {'authors': authors})
+
+
+class AuthorFollowUserView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        user = self.request.user
+        author = Author.objects.get(user=user)
+        users = RequestAuthorUser.objects.filter(author=author)
+
+        return render(request, 'users/authors_follow_user.html', {'users': users, 'user': user})
 
 class UserPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'registration/password_reset_confirm.html'

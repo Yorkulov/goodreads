@@ -21,17 +21,23 @@
 <div class="container-author">
     <div class="author-page">
         <div class="links">
-            {% if request_form.exists %}
+            {% if request_form %}
                 <form method="POST">{% csrf_token %}
-                    <button class="btn btn-primary follow-button" type="submit">Unfollow</button>
+                    <button class="btn btn-primary follow-button button_text" type="submit">Unfollow</button>
                 </form>
             {% else %}
                 <form method="POST">{% csrf_token %}
-                    <button class="btn btn-primary follow-button" type="submit">Follow</button>
+                    <button class="btn btn-primary follow-button button_text" type="submit">Follow</button>
                 </form>
             {% endif %}
-            <a href="{% url 'books:author_message' author.pk %}" class="btn">User's chats</a>
-            <a href="{% url 'books:author_user_chat' author.pk user.pk %}" class="btn">Author's chat</a>
+            {% if author.user == user %}
+                <a href="{% url 'users:author_follow_user' %}" class="btn btn-outline-primary button_text">User's chats</a>
+                <a href="{% url 'books:update_author' author.pk %}" class="edit-button">Edit Author</a>
+                <a href="{% url 'books:delete_author' author.pk %}" class="delete-button">Delete Author</a>
+            {% else %}
+                <a href="{% url 'books:author_user_chat' author.pk user.pk %}" class="btn btn-outline-primary button_text">Author's chat</a>
+            {% endif %}
+
             <div class="instagram"><i class="fa-brands fa-square-instagram"></i></div>
             <div class="telegram"><i class="fa-brands fa-telegram"></i></div>
             <div class="twitter"><i class="fa-brands fa-x-twitter"></i></div>

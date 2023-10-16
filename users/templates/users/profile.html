@@ -39,7 +39,7 @@
                             </div>
                             <div class="full-name">
                                 <div class="title">{{user.first_name}} {{user.last_name}}</div>
-                                <div class="subtitle">Front-end, Backend, Cyber Security Developer, USA</div>                        
+                                {% comment %} <div class="subtitle">Front-end, Backend, Cyber Security Developer, USA</div>                         {% endcomment %}
                             </div>
                         </div>
                     </div>
@@ -54,12 +54,17 @@
                 </section>
             </div>
             <div class="links">
-                <a href="{% url 'users:user_follow_author' %}" class="authors"><i class="bi bi-people-fill"></i></a>
-                <a href="#" class="saved"><i class="bi bi-cloud-download-fill"></i></a>
-                <a href="#" class="comment"><i class="bi bi-chat-fill"></i><span class="notification-a">{{comments}}</span></a>
+                <a href="{% url 'users:user_follow_author' %}" class="authors"><i class="bi bi-people-fill"></i><span class="notification-a">{{authors}}</span></a>
+                <a href="#" class="saved"><i class="bi bi-chat-fill"></i><span class="notification-a">{{users_comment}}</span></a>
+                <a href="#" class="comment"><i class="bi bi-cloud-download-fill"></i><span class="notification-a">{{comments}}</span></a>
                 <a href="#" class="likes"><i class="bi bi-heart-fill"></i></a>
                 <a href="#" class="send"><i class="bi bi-send-fill"></i></a>
             </div>
+            {% if not users_author %}
+                <a href="{% url 'books:create_author'  %}" class="create-button">Go to Author position</a>
+            {% else %}
+                <a href="{% url 'books:author_detail' author.pk  %}" class="create-button">Author Page</a>
+            {% endif %}
         </div>
     </div>
 {% endblock content %}

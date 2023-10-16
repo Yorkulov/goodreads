@@ -9,8 +9,8 @@ class BookAdmin(admin.ModelAdmin):
 
 
 class AuthorAdmin(admin.ModelAdmin):
-    search_fields = ('first_name', 'username', 'email')
-    list_display = ('pk', 'first_name', 'last_name', 'email')
+    search_fields = ('first_name', 'username')
+    list_display = ('pk', 'first_name', 'last_name')
 
 
 class BookAuthorAdmin(admin.ModelAdmin):

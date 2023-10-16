@@ -55,3 +55,22 @@ h2{
     font-weight: 400;
     font-size: 18px;
 }
+
+.create-book-button{
+    display: inline-block;
+    position: absolute;
+    width: 200px;
+    font-size: 22px;
+    top: 130px;
+    font-family: cursive;
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+    right: 100px;
+    text-decoration: none;
+    padding: 6px 15px;
+    border: 2px solid red;
+    background-color: rgb(255, 255, 255);
+    text-align: center;
+    border-radius: 7px;
+    letter-spacing: 1px;
+}
