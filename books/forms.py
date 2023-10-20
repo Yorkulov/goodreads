@@ -27,7 +27,7 @@ class RequestAuthorUserForm(forms.ModelForm):
     
     class Meta:
         model = RequestAuthorUser
-        fields = ('author', 'user', 'is_status')
+        fields = ('author', 'user')
     
 
 class AuthorUserChatForm(forms.ModelForm):

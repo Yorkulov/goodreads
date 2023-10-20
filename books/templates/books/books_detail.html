@@ -25,7 +25,7 @@
         
         <div class="about">
             <li class="list-unstyled book-detail-title">{{book.title}}</li>
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and book_author.author.user == user %}
             <a href="{% url 'books:book_update' book.pk %}" class="delete-button">Edit Book</a>
             <a href="{% url 'books:book_delete' book.pk %}" class="edit-button" >Delete Book</a>
             {% endif %}

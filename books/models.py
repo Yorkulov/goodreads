@@ -20,7 +20,7 @@ class Author(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     bio = models.TextField()
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, unique=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -52,7 +52,6 @@ class BookReview(models.Model):
 class RequestAuthorUser(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_request')
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='author_request')
-    is_status = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('user', 'author')

@@ -1,7 +1,7 @@
-from django.test import TestCase
+from django.test import Client, TestCase
 from django.urls import reverse
 
-from books.models import Book, BookReview
+from books.models import Author, Book, BookAuthor, BookReview, MessageToAuthor, RequestAuthorUser
 from users.models import CustomUser
 
 
@@ -32,14 +32,25 @@ class BooksTestCase(TestCase):
         self.assertContains(response, 'No books found.')
 
 
+    def test_book_detail_view(self):
+        user = CustomUser.objects.create(username='testuser', password='testpassword')
+        book = Book.objects.create(title='Book 1', description='Book 1 description', isbn='35646383')
+        author = Author.objects.create(first_name='Temur', last_name='Yorkulov', user=user)
+        book_author = BookAuthor.objects.create(book=book, author=author)
+        review = BookReview.objects.create(book=book, user=user, stars_given=4, comment='Great book!')
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get(reverse('books:detail', kwargs={'pk': book.pk}))
 
-    def test_detail_page(self):
-        book1 = Book.objects.create(title='Book 1', description='Book 1 description', isbn='35646383')
-        response = self.client.get(reverse('books:detail', kwargs={'pk': book1.pk}))
-
-        self.assertContains(response, book1.title)
-        self.assertContains(response, book1.description)
-    
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'books/books_detail.html')
+        self.assertContains(response, book.title)
+        self.assertContains(response, book.description)
+        self.assertContains(response, review.comment)
+        self.assertIn('book', response.context)
+        self.assertIn('review_form', response.context)
+        self.assertIn('reviews', response.context)
+        self.assertIn('user', response.context)
+        self.assertIn('book_author', response.context)
 
 
     def test_search_books(self):
@@ -207,3 +218,23 @@ class BookReviewtestCase(TestCase):
 
         self.assertEqual(count, 0)
         self.assertFalse(BookReview.objects.filter(pk=review.pk).exists())
+
+
+
+class AuthorViewTestCase(TestCase):
+
+    def setUp(self):
+        self.user = CustomUser.objects.create(username='testuser', email='admin@gmail.com')
+        self.user.set_password('testpassword')
+        self.user.save()
+        self.client.login(username='testuser', password='testpassword')
+
+    def test_author_get_view(self):
+
+        author = Author.objects.create(first_name='Temur', last_name='Yorkulov', user=self.user)
+        response = self.client.get(reverse('books:author_detail', kwargs={'pk': author.pk}))
+
+        self.assertEqual(response.context['author'].first_name, author.first_name)
+        self.assertEqual(response.context['author'].last_name, author.last_name)
+        self.assertEqual(response.context['author'].user, author.user)
+        self.assertEqual(response.context['user'], self.user)

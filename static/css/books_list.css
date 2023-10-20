@@ -74,3 +74,16 @@ h2{
     border-radius: 7px;
     letter-spacing: 1px;
 }
+
+.review-form{
+    margin: 100px 0;
+    width: 90%;
+}
+
+.review-form input{
+    font-size: 22px !important;
+}
+
+.review-form button {
+    font-size: 22px !important;
+}

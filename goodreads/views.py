@@ -8,7 +8,6 @@ from django.contrib import messages
 from books.models import Author, Book, BookReview
 from users.models import CustomUser
 
-
 def custom_404_page(request, exception=None):
     return render(request, '404.html', status=404)
 

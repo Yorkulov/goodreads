@@ -62,15 +62,9 @@
               <li class="nav-item dropdown list-unstyled">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{% if user.first_name == "" %} <span>{{user.username}}</span> {% else %} <span>{{user.first_name}}</span> {% endif %}</a>
                 <ul class="dropdown-menu">
-                  <li>
-                    <a class="dropdown-item {% if request.path == profile %} active {% endif %}" href="{% url 'users:profile' %}">Profile</a>
-                  </li>
-                  <li>
+                    <a class="dropdown-item bg-warning {% if request.path == profile %} active {% endif %}" href="{% url 'users:profile' %}">Profile</a>
                     <hr class="dropdown-divider" />
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a>
-                  </li>
+                    <a class="dropdown-item bg-warning" href="{% url 'users:logout' %}">Logout</a>
                   {% endif %}
                 </ul>
               </li>

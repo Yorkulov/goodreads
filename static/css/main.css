@@ -1,8 +1,13 @@
 /* Umumiy classlar */
 .active{
-    color: rgb(77, 10, 10) !important;
+    color: rgb(255, 214, 214) !important;
 }
 
+.pagination{
+    margin-bottom: 0 !important;
+    padding: 20px;
+    font-size: 22px !important;
+}
 
 .temur{
     background-color: white;
@@ -29,14 +34,14 @@
 
 .navbar-brand{
     font-size: 35px !important;
-    color: rgb(189, 6, 6);
+    color: rgb(255, 22, 22);
     font-weight: 500;
     font-family: 'Courier New', Courier, monospace;
     margin: 0 30px;   
 }
 
 .navbar-brand:hover{
-    color: rgb(189, 6, 6) !important;
+    color: rgb(255, 0, 0) !important;
 }
 
 .navbar-nav > li{
