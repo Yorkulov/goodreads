@@ -23,7 +23,7 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 # DEBUG = False
 
-ALLOWED_HOSTS = ['https://yorkulov.fibo.cloud/', 'localhost']
+ALLOWED_HOSTS = ['goodreads.fibo.cloud', 'localhost', '30179']
 
 
 # Application definition
